@@ -18,7 +18,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.get('/events', sse.init);
-redis.on('pmessage', (channel, message) =>
+redis.on('pmessage', (_, channel, message) =>
   sse.send({ message, channel }, 'message'),
 );
 
