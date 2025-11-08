@@ -17,7 +17,7 @@ Basic Express.js app for forwarding Redis pub/sub messages to SSE.
 
 ### `/events`
 
-SSE event stream. Redis messages will be forwarded as a message event:
+SSE event stream. Redis messages will be [converted to a JSON string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify) and forwarded as a message event:
 
 With SEND_RAW_REDIS_MESSAGES:
 
