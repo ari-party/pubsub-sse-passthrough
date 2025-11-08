@@ -1,4 +1,4 @@
-// Credits to github.com/dpskvn/express-sse
+// Credits to https://github.com/dpskvn/express-sse
 
 import { EventEmitter } from 'node:events';
 
