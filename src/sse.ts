@@ -10,7 +10,7 @@ interface Data {
 }
 
 export class SSE extends EventEmitter {
-  constructor(public heartbeatInterval: number = 30) {
+  constructor(private readonly heartbeatInterval: number = 30) {
     super();
 
     this.init = this.init.bind(this);
