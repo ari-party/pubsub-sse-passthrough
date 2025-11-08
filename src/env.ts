@@ -20,6 +20,11 @@ export const env = createEnv({
       .default('30')
       .transform((v) => parseInt(v, 10))
       .pipe(z.number()),
+
+    SEND_RAW_REDIS_MESSAGES: z
+      .string()
+      .default('true')
+      .transform((v) => v === 'true'),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,

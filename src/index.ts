@@ -19,7 +19,9 @@ app.get('/health', (_req, res) => {
 
 app.get('/events', sse.init);
 redis.on('pmessage', (_, channel, message) =>
-  sse.send({ message, channel }, 'message'),
+  env.SEND_RAW_REDIS_MESSAGES
+    ? sse.send(message, channel)
+    : sse.send({ message, channel }, 'message'),
 );
 
 app.listen(env.PORT, '0.0.0.0', () =>
