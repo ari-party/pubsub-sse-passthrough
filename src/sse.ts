@@ -29,6 +29,9 @@ export class SSE extends EventEmitter {
     res.setHeader('x-accel-buffering', 'no');
     if (req.httpVersionMajor < 2) res.setHeader('Connection', 'keep-alive');
 
+    res.write(': connected\n\n');
+    res.flushHeaders();
+
     this.setMaxListeners(this.getMaxListeners() + 2);
 
     const dataListener = (data: Data) => {
