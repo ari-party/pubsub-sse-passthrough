@@ -24,6 +24,8 @@ redis.on('pmessage', (_, channel, message) =>
     : sse.send({ message, channel }, 'message'),
 );
 
-app.listen(env.PORT, '0.0.0.0', () =>
+const server = app.listen(env.PORT, '0.0.0.0', () =>
   log.info(`Server listening on 0.0.0.0:${env.PORT}`),
 );
+
+server.setTimeout(env.HEARTBEAT_INTERVAL * 1.5);
