@@ -10,7 +10,7 @@ interface Data {
 }
 
 export class SSE extends EventEmitter {
-  constructor(private readonly heartbeatInterval: number = 30) {
+  constructor(private readonly heartbeatInterval: number) {
     super();
 
     this.init = this.init.bind(this);
@@ -50,7 +50,7 @@ export class SSE extends EventEmitter {
       res.write(': heartbeat\n\n');
 
       res.flushHeaders();
-    }, this.heartbeatInterval * 1_000);
+    }, this.heartbeatInterval);
 
     req.on('close', () => {
       this.removeListener('data', dataListener);

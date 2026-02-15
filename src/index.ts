@@ -5,8 +5,10 @@ import { log } from '@/pino';
 import { redis } from '@/redis';
 import { SSE } from '@/sse';
 
+const heartbeatInterval = env.HEARTBEAT_INTERVAL * 1_000;
+
 const app = express();
-const sse = new SSE(env.HEARTBEAT_INTERVAL);
+const sse = new SSE(heartbeatInterval);
 
 app.disable('x-powered-by');
 
@@ -28,4 +30,4 @@ const server = app.listen(env.PORT, '0.0.0.0', () =>
   log.info(`Server listening on 0.0.0.0:${env.PORT}`),
 );
 
-server.setTimeout(env.HEARTBEAT_INTERVAL * 1.5);
+server.setTimeout(heartbeatInterval * 1.5);
