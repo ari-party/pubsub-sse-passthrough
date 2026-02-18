@@ -7,6 +7,7 @@ import (
 	"time"
 
 	goredis "github.com/redis/go-redis/v9"
+	"github.com/redis/go-redis/v9/maintnotifications"
 )
 
 type Handler func(channel string, message string)
@@ -23,6 +24,9 @@ func NewSubscriber(redisURL string, channels string, logger *log.Logger) (*Subsc
 	opts, err := goredis.ParseURL(redisURL)
 	if err != nil {
 		return nil, err
+	}
+	opts.MaintNotificationsConfig = &maintnotifications.Config{
+		Mode: maintnotifications.ModeDisabled,
 	}
 
 	client := goredis.NewClient(opts)
