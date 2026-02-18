@@ -1,30 +1,24 @@
 # Build layer
-FROM node:24-alpine AS build
+FROM golang:1.23-alpine AS build
 
-RUN corepack enable && corepack prepare pnpm@10 --activate
-
-COPY . /build
 WORKDIR /build
 
-COPY package.json ./
-COPY pnpm-lock.yaml ./
+COPY go.mod ./
+RUN go mod download
 
-RUN pnpm fetch --frozen-lockfile
-RUN pnpm install --frozen-lockfile
+COPY . .
 
-RUN pnpm run build
+RUN CGO_ENABLED=0 GOOS=linux go build -o /pubsub-sse-passthrough .
 
 # Package layer
-FROM imbios/bun-node:24-alpine AS package
+FROM alpine:3.22 AS package
 
-RUN apk --no-cache add curl
+RUN apk --no-cache add ca-certificates curl
 
 WORKDIR /app
 
-COPY --from=build /build/dist dist
-COPY --from=build /build/node_modules node_modules
-COPY --from=build /build/package.json package.json
+COPY --from=build /pubsub-sse-passthrough /app/pubsub-sse-passthrough
 
-CMD ["bun", "run", "dist/index.js"]
+CMD ["/app/pubsub-sse-passthrough"]
 
 EXPOSE 3000
